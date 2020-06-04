@@ -1,5 +1,7 @@
 from room import Room
 from player import Player
+from color import Color
+import textwrap 
 
 # Declare all the rooms
 
@@ -39,13 +41,11 @@ room['treasure'].s_to = room['narrow']
 #
 # Main
 #
-
 # Make a new player object that is currently in the 'outside' room.
 newPlayer = Player("Sir Cornelius the 3rd", "outside")
 # newPlayer.current_room = "inside" ## Changing location 
-print(newPlayer)
-
-userInput = input("Move commands: [w] up, [a] left, [d] right, [s] down   Your input: ")
+print(f"{Color.CYAN} {newPlayer} {Color.END}")
+userInput = input(f"{Color.YELLOW}Move commands: [w] up, [a] left, [d] right, [s] down   Your input: {Color.END}")
 
 # commands()
 # userInput = commands
@@ -61,14 +61,14 @@ userInput = input("Move commands: [w] up, [a] left, [d] right, [s] down   Your i
 
 
 def checkMove(direction):
-    if hasattr(room[newPlayer.current_room], direction):
-        val = getattr(room[newPlayer.current_room], direction)
+    val = getattr(room[newPlayer.current_room], direction)
+    if not val == None:
         for key, value in room.items():
             if value == val:
                 newPlayer.current_room = key
-                print(newPlayer.current_room)
+                print(f"{Color.CYAN}{newPlayer}{Color.END}{Color.GREEN} is in room: {val.name} -- Description: {textwrap.wrap(val.description)}{Color.END}")
     else: 
-        print("no!")
+        print(f"{Color.RED}Player can't go there!{Color.END}")
 
 while not userInput == "q":
     if userInput == "w":
@@ -80,9 +80,9 @@ while not userInput == "q":
     elif userInput == "d":
         checkMove("e_to")
     else:
-        print("Wrong input, try again.")
+        print(f"{Color.RED}Wrong input, try again.{Color.END}")
     
-    userInput = input("Move commands: [w] up, [a] left, [d] right, [s] down   Your input: ")
+    userInput = input(f"{Color.YELLOW}Move commands: [w] up, [a] left, [d] right, [s] down   Your input: {Color.END}")
 
 print("Game quit, play again later!")
 
