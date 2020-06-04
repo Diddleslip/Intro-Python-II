@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -22,6 +23,7 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
+
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
@@ -33,17 +35,57 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# print(room['foyer'].values)
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+newPlayer = Player("Sir Cornelius the 3rd", "outside")
+# newPlayer.current_room = "inside" ## Changing location 
+print(newPlayer)
 
+userInput = input("Move commands: [w] up, [a] left, [d] right, [s] down   Your input: ")
+
+# commands()
+# userInput = commands
+# print(userInput) Doesn't work -- answer: <function commands at 0x0000015287563948>
+
+## Command shortcuts:
+# w = 
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
+
+
+def checkMove(direction):
+    if hasattr(room[newPlayer.current_room], direction):
+        val = getattr(room[newPlayer.current_room], direction)
+        for key, value in room.items():
+            if value == val:
+                newPlayer.current_room = key
+                print(newPlayer.current_room)
+    else: 
+        print("no!")
+
+while not userInput == "q":
+    if userInput == "w":
+        checkMove("n_to")
+    elif userInput == "a":
+        checkMove("w_to")
+    elif userInput == "s":
+        checkMove("s_to")
+    elif userInput == "d":
+        checkMove("e_to")
+    else:
+        print("Wrong input, try again.")
+    
+    userInput = input("Move commands: [w] up, [a] left, [d] right, [s] down   Your input: ")
+
+print("Game quit, play again later!")
+
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
